@@ -45,10 +45,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   double lat = 0;
   double long = 0;
-  double alt = 0;
+  double alt = -3;
+  String placeMark = '';
 
   void _incrementCounter() {
     Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
@@ -57,14 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
         long = position.longitude;
         alt = position.altitude;
       });
-    });
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      Geolocator().placemarkFromPosition(position).then((List<Placemark> placeMarks) {
+        setState(() {
+          placeMark = '';
+          placeMarks.forEach((place) {
+            placeMark += place.toJson().toString();
+          });
+        });
+      });
     });
   }
 
@@ -109,6 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
               '$long, $lat, $alt',
               style: Theme.of(context).textTheme.display1,
             ),
+            Text(
+              'Placemark: $placeMark',
+            )
           ],
         ),
       ),
