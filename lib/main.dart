@@ -45,7 +45,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double lat = 0;
+  double lat = 1;
   double long = 0;
   double alt = -3;
   String placeMark = '';
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'Your position:',
             ),
             Text(
-              '$long, $lat, $alt',
+              '$lat ,$long $alt',
               style: Theme.of(context).textTheme.display1,
             ),
             Text(
