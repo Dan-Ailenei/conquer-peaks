@@ -1,3 +1,4 @@
+import 'package:conquerpeaksfe/model.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+      Location(data: position.toJson().toString(), datetime: DateTime.now()).save();
       setState(() {
         lat = position.latitude;
         long = position.longitude;
@@ -59,13 +61,21 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       Geolocator().placemarkFromPosition(position).then((List<Placemark> placeMarks) {
         setState(() {
-          placeMark = '';
-          placeMarks.forEach((place) {
-            placeMark += place.toJson().toString();
-          });
+          placeMark = 'Hello';
+//          placeMarks.forEach((place) {
+//            placeMark += place.toJson().toString();
+//          });
         });
       });
     });
+  }
+
+  void _refresh() async{
+    final locationList = await Location().select().toList();
+    final location = locationList.elementAt(0);
+    setState(()  {
+       placeMark = 'Saved location on ${location.datetime}\n${location.data}';
+     });
   }
 
   @override
@@ -81,6 +91,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              _refresh();
+            },
+          )
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
