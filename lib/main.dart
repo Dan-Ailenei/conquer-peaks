@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
-      Location(data: position.toJson().toString(), datetime: DateTime.now()).save();
+      Location(data: null, datetime: null).save();
       setState(() {
         lat = position.latitude;
         long = position.longitude;

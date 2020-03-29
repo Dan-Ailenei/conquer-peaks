@@ -8,22 +8,23 @@ import 'package:geolocator/geolocator.dart';
 class LocationServices {
 
   StreamController<GeoCoordinates> continuousGeoCoordinates;
+  dynamic apiLocation = Geolocator();
 
-  static Future<bool> isAvailable() async {
-    GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
+  Future<bool> isAvailable() async {
+    GeolocationStatus geolocationStatus = await this.apiLocation.checkGeolocationPermissionStatus();
     if (geolocationStatus == GeolocationStatus.granted)
       return true;
     return false;
   }
 
   Future<GeoCoordinates> getGeoCoordinates() async {
-    var position = await Geolocator()
+    var position = await this.apiLocation()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return GeoCoordinates(position.latitude, position.longitude, position.altitude);
   }
 
   void liveGeoCoordinates() {
-    var geoLocator = Geolocator();
+    var geoLocator = this.apiLocation();
     var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
     geoLocator.getPositionStream(locationOptions).listen(
       (Position position) {

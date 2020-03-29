@@ -7,10 +7,12 @@ class MockGeoLocator extends Mock implements Geolocator {}
 
 void main() {
   group('isAvailable', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
     test('Return true if GeoLocationStatus is granted', () async {
-//      final mockGeoLocator = MockGeoLocator();
-//      when(await mockGeoLocator.checkGeolocationPermissionStatus()).thenReturn(GeolocationStatus.granted);
-      expect(await LocationServices.isAvailable(), true);
+      final mockGeoLocator = MockGeoLocator();
+      final locationService = LocationServices()..apiLocation = mockGeoLocator;
+      when(mockGeoLocator.checkGeolocationPermissionStatus()).thenAnswer((_) async => GeolocationStatus.granted);
+      expect(await locationService.isAvailable(), true);
     });
 //    test('Return false if GeoLocationStatus is denied', () async {
 //      var locationServices = LocationServices();

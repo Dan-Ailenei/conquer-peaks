@@ -7,15 +7,59 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 part 'model.g.dart';
 
-const tableCategory = SqfEntityTable(
+
+const tableUser = SqfEntityTable(
+  tableName: 'user',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: true, // ?? no idea daca sa patram asta sau nu asa ca momentan o las
+  modelName: null,
+  fields: [
+    SqfEntityField('name', DbType.real),
+    SqfEntityField('opk', DbType.text),
+    // sso
+    // profile picture
+//    SqfEntityField('', DbType.real),
+  ]
+);
+
+const tableTrip = SqfEntityTable(
+  tableName: 'trip',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: true, // ?? no idea daca sa patram asta sau nu asa ca momentan o las
+  modelName: null,
+  fields: [
+    SqfEntityFieldRelationship(
+      parentTable: tableUser,
+      deleteRule: DeleteRule.CASCADE,
+      defaultValue: null
+    ),
+    SqfEntityField('starttime', DbType.datetime), //default timezone.now()
+    SqfEntityField('endtime', DbType.datetime),
+  ]
+);
+
+const tableLocation = SqfEntityTable(
     tableName: 'location',
     primaryKeyName: 'id',
     primaryKeyType: PrimaryKeyType.integer_auto_incremental,
     useSoftDeleting: true, // ?? no idea daca sa patram asta sau nu asa ca momentan o las
     modelName: null,
     fields: [
-      SqfEntityField('data', DbType.text),
       SqfEntityField('datetime', DbType.datetime), // nu cred ca pot da un lambda cu datetime.now() dar o sa mai incerc
+      SqfEntityField('longitude', DbType.real),
+      SqfEntityField('latitude', DbType.real),
+      SqfEntityField('altitude', DbType.real),
+      SqfEntityField('accuracy', DbType.real),
+      SqfEntityField('heading', DbType.real),
+      SqfEntityField('speed', DbType.real),
+      SqfEntityField('timestamp', DbType.real), // timestamp given by geolocator
+      SqfEntityField('speedAccuracy', DbType.real),
+      SqfEntityFieldRelationship(
+          parentTable: tableTrip,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: '0'),
     ]
 );
 
@@ -34,7 +78,8 @@ const seqIdentity = SqfEntitySequence(
 const myDbModel = SqfEntityModel(
     modelName: 'MyDbModel', // optional
     databaseName: 'sampleORM.db',
-    databaseTables: [tableCategory,
+    databaseTables: [
+      tableUser, tableTrip, tableLocation
     ],
     sequences: [seqIdentity],
     bundledDatabasePath: null
