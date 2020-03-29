@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 ///
 /// Class that wraps whatever location package is used
 ///
-class LocationServices {
+class LocationService {
 
   StreamController<GeoCoordinates> continuousGeoCoordinates;
   dynamic apiLocation = Geolocator();
@@ -18,15 +18,14 @@ class LocationServices {
   }
 
   Future<GeoCoordinates> getGeoCoordinates() async {
-    var position = await this.apiLocation()
+    var position = await this.apiLocation
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return GeoCoordinates(position.latitude, position.longitude, position.altitude);
   }
 
   void liveGeoCoordinates() {
-    var geoLocator = this.apiLocation();
     var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
-    geoLocator.getPositionStream(locationOptions).listen(
+    this.apiLocation.getPositionStream(locationOptions).listen(
       (Position position) {
         continuousGeoCoordinates.add(GeoCoordinates(position.latitude, position.longitude, position.altitude));
     });
