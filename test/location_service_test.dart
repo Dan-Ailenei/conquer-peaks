@@ -1,4 +1,4 @@
-import 'package:conquerpeaksfe/location_service.dart';
+import 'package:conquerpeaksfe/bloc/bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,10 +9,10 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('isAvailable', () {
     MockGeoLocator mockGeoLocator;
-    LocationService locationService;
+    LocationBloc locationService;
     setUpAll(() {
       mockGeoLocator = MockGeoLocator();
-      locationService = LocationService()..apiLocation = mockGeoLocator;
+      locationService = LocationBloc()..locationAPI = mockGeoLocator;
     });
     test('Return true if GeoLocationStatus is granted', () async {
       when(mockGeoLocator.checkGeolocationPermissionStatus()).thenAnswer((_) async => GeolocationStatus.granted);
