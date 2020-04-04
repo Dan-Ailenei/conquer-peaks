@@ -27,6 +27,8 @@ dependencies:
   sqfentity: ^1.2.2+8
   sqfentity_gen: ^1.2.0+13
   mockito: ^4.1.1
+  flutter_bloc: ^1.0.0 # or flutter_bloc: ^3.2.0
+  equatable: ^1.0.3
 
 dev_dependencies:
   flutter_test:
