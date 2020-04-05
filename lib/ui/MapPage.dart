@@ -40,8 +40,12 @@ class MapPage extends StatelessWidget {
 
   Widget buildInitialInput() {
     return Center(
-      child: GetLocationButton(),
-    );
+      child: Column(
+        children: <Widget>[
+          GetLocationButton(),
+          ListenToLocationButton(),
+        ],
+    ));
   }
 
   Widget buildLoading() {
@@ -68,6 +72,8 @@ class MapPage extends StatelessWidget {
           style: TextStyle(fontSize: 13),
         ),
         GetLocationButton(),
+        ListenToLocationButton(),
+        CancelListenToLocationButton(),
       ],
     );
   }
@@ -91,5 +97,47 @@ class GetLocationButton extends StatelessWidget {
   void makeCall(BuildContext context) {
     final locationBloc = BlocProvider.of<LocationBloc>(context);
     locationBloc.add(GetLocation());
+  }
+}
+
+class ListenToLocationButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: RaisedButton(
+          onPressed: () => makeCall(context),
+          child: Text(
+            'Listen to Location',
+            style: TextStyle(fontSize: 20),
+          ),
+        )
+    );
+  }
+
+  void makeCall(BuildContext context) {
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
+    locationBloc.add(ListenLocation());
+  }
+}
+
+class CancelListenToLocationButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: RaisedButton(
+          onPressed: () => makeCall(context),
+          child: Text(
+            'Cancel Listen to Location',
+            style: TextStyle(fontSize: 20),
+          ),
+        )
+    );
+  }
+
+  void makeCall(BuildContext context) {
+    final locationBloc = LocationBloc();
+    locationBloc.add(CancelListenLocation());
   }
 }

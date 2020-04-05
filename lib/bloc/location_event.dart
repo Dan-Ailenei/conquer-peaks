@@ -13,3 +13,8 @@ class ListenLocation extends LocationEvent {
   @override
   List<Object> get props => [];
 }
+
+class CancelListenLocation extends LocationEvent {
+  @override
+  List<Object> get props => [];
+}
